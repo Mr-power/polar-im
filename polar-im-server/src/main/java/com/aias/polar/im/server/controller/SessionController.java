@@ -4,7 +4,6 @@ import com.aias.polar.im.server.entity.ImUser;
 import com.aias.polar.im.server.entity.ImUserSession;
 import com.aias.polar.im.server.service.ImSessionsService;
 import com.aias.polar.im.server.service.ImUserSessionService;
-import com.aias.polar.im.server.service.StartSessionService;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,6 @@ public class SessionController extends BaseController {
     private ImSessionsService sessionsService;
     @Resource
     private ImUserSessionService userSessionService;
-    @Resource
-    private StartSessionService startSessionService;
 
     @RequestMapping("getSession")
     public ResponseEntity<?> getSession(@RequestHeader("Authorization") String token) {
@@ -55,7 +52,7 @@ public class SessionController extends BaseController {
         Integer sessionId = userSessionService.queryByUserIds(user.getId(), toUserId);
         if (null == sessionId) {
             LOGGER.info("之前不存在会话信息,初始化一个");
-            sessionId = startSessionService.startSession(user.getId(), toUserId, "我通过了你的朋友验证请求，现在我们可以开始聊天了");
+            sessionId = userSessionService.startSession(user.getId(), toUserId, "我通过了你的朋友验证请求，现在我们可以开始聊天了");
         }
         Map<String, Object> map = super.getUserSessions(user.getId());
         map.put("success", true);

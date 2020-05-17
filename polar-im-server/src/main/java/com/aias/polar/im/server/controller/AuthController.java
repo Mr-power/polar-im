@@ -7,13 +7,12 @@ import com.aias.polar.im.server.DTO.UserDTO;
 import com.aias.polar.im.server.entity.ImMessage;
 import com.aias.polar.im.server.entity.ImUser;
 import com.aias.polar.im.server.entity.ImUserSession;
-import com.aias.polar.im.server.service.AuthService;
+import com.aias.polar.im.server.service.IAuthService;
 import com.aias.polar.im.server.service.ImMessageService;
 import com.aias.polar.im.server.service.ImSessionsService;
 import com.aias.polar.im.server.service.ImUserFriendService;
 import com.aias.polar.im.server.service.ImUserService;
 import com.aias.polar.im.server.service.ImUserSessionService;
-import com.aias.polar.im.server.service.StartSessionService;
 import com.aias.polar.jwt.utils.JwtUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -42,7 +41,7 @@ public class AuthController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
     @Resource
-    private AuthService authService;
+    private IAuthService IAuthService;
 
     @Resource
     private ImUserService userService;
@@ -51,8 +50,6 @@ public class AuthController {
     @Resource
     private ImUserSessionService userSessionService;
 
-    @Resource
-    private StartSessionService startSessionService;
     @Resource
     private ImSessionsService sessionsService;
     @Resource
@@ -95,7 +92,7 @@ public class AuthController {
     public ResponseEntity<?> login(String account,
                                    String password) {
         Map<String, Object> result = Maps.newHashMap();
-        boolean checkResult = authService.checkLogin(account, password);
+        boolean checkResult = IAuthService.checkLogin(account, password);
         if (!checkResult) {
             result.put("msg", "用户名密码校验失败");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -187,6 +184,6 @@ public class AuthController {
 //                ImUserSession.builder().sessionId(sessions.getId()).userId(userId).build();
 //        userSessionService.insert(userSession);
 //        messageService.addTextMessage(sessions.getId(), 0, "欢迎!");
-        startSessionService.startSession(userId, 0, "欢迎");
+        userSessionService.startSession(userId, 0, "欢迎");
     }
 }

@@ -1,10 +1,11 @@
 package com.aias.polar.im.server.service.impl;
 
 import com.aias.polar.im.server.dao.ImUserSessionDao;
+import com.aias.polar.im.server.entity.ImSessions;
 import com.aias.polar.im.server.entity.ImUserSession;
+import com.aias.polar.im.server.service.ImMessageService;
 import com.aias.polar.im.server.service.ImSessionsService;
 import com.aias.polar.im.server.service.ImUserSessionService;
-import com.aias.polar.im.server.service.StartSessionService;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,9 @@ public class ImUserSessionServiceImpl implements ImUserSessionService {
     @Resource
     private ImSessionsService sessionsService;
     @Resource
-    private StartSessionService startSessionService;
-
+    private ImUserSessionService userSessionService;
+    @Resource
+    private ImMessageService messageService;
     /**
      * 通过ID查询单条数据
      *
@@ -174,4 +176,22 @@ public class ImUserSessionServiceImpl implements ImUserSessionService {
     public boolean deleteById(Integer id) {
         return this.imUserSessionDao.deleteById(id) > 0;
     }
+
+
+
+    @Override
+    public Integer startSession(Integer myUserId, Integer toUserId, String firstMessage) {
+        ImSessions session = sessionsService.insert();
+        // 创建 userSession
+        ImUserSession userSession0 =
+                ImUserSession.builder().sessionId(session.getId()).userId(myUserId).build();
+        userSessionService.insert(userSession0);
+        ImUserSession userSession =
+                ImUserSession.builder().sessionId(session.getId()).userId(toUserId).build();
+        userSessionService.insert(userSession);
+        // 返回 我通过了你的朋友验证请求，现在我们可以开始聊天了/欢迎
+        messageService.addTextMessage(session.getId(), toUserId, firstMessage);
+        return session.getId();
+    }
+
 }

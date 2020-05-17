@@ -108,4 +108,5 @@ public interface ImUserSessionService {
      */
     boolean deleteById(Integer id);
 
+    Integer startSession(Integer myUserId, Integer toUserId, String firstMessage);
 }

@@ -1,7 +1,7 @@
 package com.aias.polar.im.server.service.impl;
 
 import com.aias.polar.im.server.entity.ImUser;
-import com.aias.polar.im.server.service.AuthService;
+import com.aias.polar.im.server.service.IAuthService;
 import com.aias.polar.im.server.service.ImUserService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @since 2020/3/13
  */
 @Service
-public class AuthServiceImpl implements AuthService {
+public class IAuthServiceImpl implements IAuthService {
 
     @Resource
     private ImUserService imUserService;
