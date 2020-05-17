@@ -5,4 +5,5 @@
 ##### 计划: FTP + HDFS + 图床?
 ##### 目前已经实现简单的FTP上传
 #####   增加七牛云
+#####   增加sm图床
 ##### TODO STFP HDFS NGINX
