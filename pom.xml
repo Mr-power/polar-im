@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aias</groupId>
+    <artifactId>polar</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>polar-common</module>
+        <module>polar-jwt</module>
+        <module>polar-storage</module>
+        <module>polar-im-server</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <polar.version>1.0-SNAPSHOT</polar.version>
+        <cglib.version>3.2.6</cglib.version>
+        <jjwt.version>0.9.0</jjwt.version>
+        <mysql-connector-java.version>8.0.11</mysql-connector-java.version>
+        <druid.version>1.1.9</druid.version>
+        <mybatis.version>2.1.2</mybatis.version>
+        <fastjson.version>1.2.62</fastjson.version>
+        <guava.version>28.2-jre</guava.version>
+        <jackson.version>2.8.3</jackson.version>
+        <commons-lang3.version>3.7</commons-lang3.version>
+        <commons-net.version>3.6</commons-net.version>
+        <commons-io.version>2.6</commons-io.version>
+        <commons-codec.version>1.13</commons-codec.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
+        <easyexcel.version>2.2.3</easyexcel.version>
+        <netty.version>4.1.43.Final</netty.version>
+        <gson.version>2.8.5</gson.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

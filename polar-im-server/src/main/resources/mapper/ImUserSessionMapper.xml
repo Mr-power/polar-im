@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aias.polar.im.server.dao.ImUserSessionDao">
+
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.aias.polar.im.server.entity.ImUserSession">
+        select
+          id, session_id, user_id, close_flag, top_flag
+        from im_user_session
+        where id = #{id}
+        and close_flag = 0
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultType="com.aias.polar.im.server.entity.ImUserSession">
+        select
+          id, session_id, user_id, close_flag, top_flag
+        from im_user_session
+        where close_flag = 0
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultType="com.aias.polar.im.server.entity.ImUserSession">
+        select
+        id, session_id, user_id, close_flag, top_flag
+        from im_user_session
+        <where>
+            close_flag = 0
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="sessionId != null">
+                and session_id = #{sessionId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryToUserIdBySessionIdAndFromUserId" resultType="java.lang.Integer">
+        select
+            user_id
+        from
+            im_user_session
+        where
+            session_id = #{sessionId}
+        and
+            user_id != #{fromUserId}
+        and
+            close_flag = 0
+    </select>
+    <select id="queryAllByMap" resultType="com.aias.polar.im.server.entity.ImUserSession">
+        select
+            id, session_id, user_id, close_flag, top_flag
+        from
+            im_user_session
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="sessionId != null">
+                session_id = #{sessionId}
+            </if>
+            <if test="userId != null">
+               and user_id = #{userId}
+            </if>
+            <if test="closeFlag != null">
+               and close_flag = #{closeFlag}
+            </if>
+            <if test="topFlag != null">
+               and top_flag = #{topFlag},
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into im_user_session(session_id, user_id)
+        values (#{sessionId}, #{userId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update im_user_session
+        <set>
+            <if test="sessionId != null">
+                session_id = #{sessionId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="closeFlag != null">
+                close_flag = #{closeFlag},
+            </if>
+            <if test="topFlag != null">
+                top_flag = #{topFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from im_user_session where id = #{id}
+    </delete>
+
+</mapper>

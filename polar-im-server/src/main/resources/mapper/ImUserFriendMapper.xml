@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aias.polar.im.server.dao.ImUserFriendDao">
+
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.aias.polar.im.server.entity.ImUserFriend">
+        select
+          id, user_id, friend_id, status, create_time, update_time
+        from im_user_friend
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultType="com.aias.polar.im.server.entity.ImUserFriend">
+        select
+          id, user_id, friend_id, status, create_time, update_time
+        from im_user_friend
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultType="com.aias.polar.im.server.entity.ImUserFriend">
+        select
+        id, user_id, friend_id, status, create_time, update_time
+        from im_user_friend
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="friendId != null">
+                and friend_id = #{friendId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryAllByUserId" resultType="com.aias.polar.im.server.entity.ImUserFriend">
+        select
+        id, user_id, friend_id, status, create_time, update_time
+        from im_user_friend
+        where
+            user_id = #{userId}
+    </select>
+
+    <select id="queryAllFriendInfoByMap" resultType="com.aias.polar.im.server.DTO.UserDTO">
+        select
+            u.id, u.username,u.avatar,u.first_letter
+        from
+            im_user_friend friend
+        left join
+            im_user u
+        ON
+            u.id = friend_id
+        where
+            friend.user_id = #{userId}
+        and
+            friend.status = #{status}
+        order by
+            u.username
+    </select>
+    <select id="queryByMap" resultType="com.aias.polar.im.server.entity.ImUserFriend">
+        select
+        id, user_id, friend_id, status, create_time, update_time
+        from im_user_friend
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="friendId != null">
+                and friend_id = #{friendId}
+            </if>
+            <if test="status">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into im_user_friend(user_id, friend_id, status, create_time, update_time)
+        values (#{userId}, #{friendId}, #{status}, NOW(),NOW())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update im_user_friend
+        <set>
+            update_time = NOW()
+            <if test="userId != null">
+                ,user_id = #{userId}
+            </if>
+            <if test="friendId != null">
+                ,friend_id = #{friendId}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from im_user_friend where id = #{id}
+    </delete>
+
+</mapper>
